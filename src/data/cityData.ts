@@ -1,0 +1,86 @@
+import { BuildingData, NPCData } from '../types';
+
+export const DISTRICTS = [
+  { id: 'core', name: 'Core Citadel', description: 'Central hub, identity nexus, and command center.' },
+  { id: 'ai-lab', name: 'Neural Heights', description: 'Generative AI, LLM reasoning architectures, and agentic workflows.' },
+  { id: 'backend-foundry', name: 'Foundry District', description: 'High-throughput microservices, distributed data, and APIs.' },
+  { id: 'frontend-plaza', name: 'Pixel Plaza', description: 'Kinetic interfaces, micro-interactions, and 3D web experiences.' },
+  { id: 'systems-depot', name: 'Kernel Basin', description: 'Low-level systems, concurrency, and real-time networking.' },
+] as const;
+
+export const BUILDINGS: BuildingData[] = [
+  {
+    id: 'bldg-echo',
+    name: 'ECHO Tower',
+    tagline: 'Identity & Philosophy Nexus',
+    district: 'core',
+    coordinates: { x: 0, y: 0, z: 0 },
+    size: { x: 4, y: 12, z: 4 },
+    color: '#1e293b',
+    accentColor: '#00f2fe',
+    status: 'operational',
+    description: 'The central identity hub housing engineering principles, journey, and technical ethos of Vansh Saxena.',
+    technologies: ['TypeScript', 'Architecture', 'Leadership'],
+  },
+  {
+    id: 'bldg-pulse',
+    name: 'Pulse Grid Engine',
+    tagline: 'Real-time Event Streaming Platform',
+    district: 'backend-foundry',
+    coordinates: { x: 12, y: 0, z: -8 },
+    size: { x: 6, y: 8, z: 5 },
+    color: '#172554',
+    accentColor: '#3b82f6',
+    relatedCaseStudyId: 'case-pulse-grid',
+    status: 'operational',
+    description: 'High-frequency telemetry and event routing infrastructure engineered for sub-millisecond dispatch.',
+    technologies: ['Go', 'Kafka', 'Redis', 'Docker'],
+  },
+  {
+    id: 'bldg-synth',
+    name: 'Synthetix Neural Lab',
+    tagline: 'Autonomous Multi-Agent Orchestrator',
+    district: 'ai-lab',
+    coordinates: { x: -14, y: 0, z: -10 },
+    size: { x: 5, y: 10, z: 5 },
+    color: '#2e1065',
+    accentColor: '#a855f7',
+    relatedCaseStudyId: 'case-synthetix',
+    status: 'operational',
+    description: 'Multi-agent coordination system leveraging structured tools, persistent memory, and reflective loops.',
+    technologies: ['Python', 'TypeScript', 'Gemini API', 'Vector DB'],
+  },
+  {
+    id: 'bldg-kinetic',
+    name: 'Canvas Matrix',
+    tagline: '3D Spatial Visualizer',
+    district: 'frontend-plaza',
+    coordinates: { x: 10, y: 0, z: 12 },
+    size: { x: 6, y: 7, z: 6 },
+    color: '#064e3b',
+    accentColor: '#10b981',
+    relatedCaseStudyId: 'case-canvas-matrix',
+    status: 'operational',
+    description: 'Interactive hardware-accelerated 3D graphics pipeline built for web applications.',
+    technologies: ['Three.js', 'WebGL', 'GLSL', 'React'],
+  },
+];
+
+export const NPCS: NPCData[] = [
+  {
+    id: 'npc-guide',
+    name: 'AURA (City Overseer)',
+    role: 'Virtual Guide & System Assistant',
+    coordinates: { x: 2, y: 0, z: 3 },
+    district: 'core',
+    dialogueTreeId: 'tree-guide',
+  },
+  {
+    id: 'npc-recruiter-bot',
+    name: 'Scout-01',
+    role: 'Talent Concierge',
+    coordinates: { x: -2, y: 0, z: 4 },
+    district: 'core',
+    dialogueTreeId: 'tree-recruiter',
+  },
+];
