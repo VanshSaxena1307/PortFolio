@@ -4,9 +4,15 @@ import './cinematic.css';
 
 interface LandingProps {
   onEnterCity: () => void;
+  onSkipIntro?: () => void;
+  onOpenRecruiter?: () => void;
 }
 
-export const CinematicLanding: React.FC<LandingProps> = ({ onEnterCity }) => {
+export const CinematicLanding: React.FC<LandingProps> = ({
+  onEnterCity,
+  onSkipIntro,
+  onOpenRecruiter,
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -108,6 +114,8 @@ export const CinematicLanding: React.FC<LandingProps> = ({ onEnterCity }) => {
         progress={scrollProgress}
         onEnterCity={onEnterCity}
         onJumpToProgress={handleJumpToProgress}
+        onSkipIntro={onSkipIntro}
+        onOpenRecruiter={onOpenRecruiter}
       />
     </div>
   );

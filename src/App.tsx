@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from './components/common/Header';
 import { CinematicLanding } from './components/landing/CinematicLanding';
 import { PortalTransition } from './components/transition/PortalTransition';
@@ -82,10 +82,24 @@ export function App() {
     currentMode === 'portal-transition' ||
     currentMode === 'city-entry';
 
+  useEffect(() => {
+    if (isFullBleedMode) {
+      document.body.classList.add('landing-mode-active');
+      document.documentElement.classList.add('landing-mode-active');
+    } else {
+      document.body.classList.remove('landing-mode-active');
+      document.documentElement.classList.remove('landing-mode-active');
+    }
+    return () => {
+      document.body.classList.remove('landing-mode-active');
+      document.documentElement.classList.remove('landing-mode-active');
+    };
+  }, [isFullBleedMode]);
+
   return (
-    <div className="app-shell">
-      {/* Hide header during the active portal transition sequence for full cinematic immersion */}
-      {currentMode !== 'portal-transition' && (
+    <div className={`app-shell ${isFullBleedMode ? 'landing-mode-shell' : ''}`}>
+      {/* Hide header during cinematic landing and portal transition for pure cinematic immersion */}
+      {currentMode !== 'landing' && currentMode !== 'portal-transition' && (
         <Header
           currentMode={currentMode}
           onNavigate={(mode) => setCurrentMode(mode)}
@@ -95,7 +109,14 @@ export function App() {
 
       <main className={`main-content ${isFullBleedMode ? 'landing-mode' : ''}`}>
         {currentMode === 'landing' && (
-          <CinematicLanding onEnterCity={handleEnterCity} />
+          <CinematicLanding
+            onEnterCity={handleEnterCity}
+            onSkipIntro={() => {
+              console.log('[V-CITY EVENT] SKIP INTRO activated — Navigating directly to City Entry');
+              setCurrentMode('city-entry');
+            }}
+            onOpenRecruiter={() => setCurrentMode('recruiter')}
+          />
         )}
 
         {currentMode === 'portal-transition' && (

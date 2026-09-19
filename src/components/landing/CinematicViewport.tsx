@@ -9,12 +9,16 @@ interface CinematicViewportProps {
   progress: number;
   onEnterCity: () => void;
   onJumpToProgress: (target: number) => void;
+  onSkipIntro?: () => void;
+  onOpenRecruiter?: () => void;
 }
 
 export const CinematicViewport: React.FC<CinematicViewportProps> = ({
   progress,
   onEnterCity,
   onJumpToProgress,
+  onSkipIntro,
+  onOpenRecruiter,
 }) => {
   // Smooth physical camera travel calculation along Z-axis
   // The camera advances through the space:
@@ -55,6 +59,8 @@ export const CinematicViewport: React.FC<CinematicViewportProps> = ({
       <CinematicTimelineHUD
         progress={progress}
         onJumpToProgress={onJumpToProgress}
+        onSkipIntro={onSkipIntro}
+        onOpenRecruiter={onOpenRecruiter}
       />
     </div>
   );
