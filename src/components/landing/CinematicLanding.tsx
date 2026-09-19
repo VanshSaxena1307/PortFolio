@@ -6,29 +6,52 @@ interface LandingProps {
   onEnterCity: () => void;
   onSkipIntro?: () => void;
   onOpenRecruiter?: () => void;
+  frozenProgress?: number;
 }
 
 export const CinematicLanding: React.FC<LandingProps> = ({
   onEnterCity,
   onSkipIntro,
   onOpenRecruiter,
+  frozenProgress,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(frozenProgress ?? 0);
 
   // Target and current progress for smooth physics-based lerp
-  const targetProgressRef = useRef(0);
-  const currentProgressRef = useRef(0);
+  const targetProgressRef = useRef(frozenProgress ?? 0);
+  const currentProgressRef = useRef(frozenProgress ?? 0);
   const rafIdRef = useRef<number | null>(null);
 
+  // If frozenProgress is provided (e.g. during transition), lock progress and disable listeners
   useEffect(() => {
+    if (frozenProgress !== undefined) {
+      setScrollProgress(frozenProgress);
+      targetProgressRef.current = frozenProgress;
+      currentProgressRef.current = frozenProgress;
+      return;
+    }
+
+    // Global keyboard Enter listener when at monitor focus
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        if (targetProgressRef.current >= 0.85) {
+          e.preventDefault();
+          onEnterCity();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+
     // Check for prefers-reduced-motion
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (mediaQuery.matches) {
       setScrollProgress(1.0);
       targetProgressRef.current = 1.0;
       currentProgressRef.current = 1.0;
-      return;
+      return () => {
+        window.removeEventListener('keydown', handleGlobalKeyDown);
+      };
     }
 
     const calculateProgress = () => {
@@ -83,13 +106,14 @@ export const CinematicLanding: React.FC<LandingProps> = ({
     rafIdRef.current = requestAnimationFrame(updateLoop);
 
     return () => {
+      window.removeEventListener('keydown', handleGlobalKeyDown);
       window.removeEventListener('scroll', calculateProgress);
       window.removeEventListener('resize', calculateProgress);
       if (rafIdRef.current) {
         cancelAnimationFrame(rafIdRef.current);
       }
     };
-  }, []);
+  }, [frozenProgress, onEnterCity]);
 
   // Jump to specific progress node (accessible timeline navigation)
   const handleJumpToProgress = (target: number) => {

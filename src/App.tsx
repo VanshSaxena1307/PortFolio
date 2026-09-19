@@ -108,8 +108,9 @@ export function App() {
       )}
 
       <main className={`main-content ${isFullBleedMode ? 'landing-mode' : ''}`}>
-        {currentMode === 'landing' && (
+        {(currentMode === 'landing' || currentMode === 'portal-transition') && (
           <CinematicLanding
+            frozenProgress={currentMode === 'portal-transition' ? 1.0 : undefined}
             onEnterCity={handleEnterCity}
             onSkipIntro={() => {
               console.log('[V-CITY EVENT] SKIP INTRO activated — Navigating directly to City Entry');
