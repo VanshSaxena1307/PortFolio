@@ -2,7 +2,14 @@
  * V-CITY Core Domain Types
  */
 
-export type AppMode = 'landing' | 'city' | 'recruiter' | 'echo' | 'case-study';
+export type AppMode = 'landing' | 'portal-transition' | 'city-entry' | 'city' | 'recruiter' | 'echo' | 'case-study';
+
+export type PortalPhase =
+  | 'idle'
+  | 'turbulence'
+  | 'whiteout'
+  | 'city-reveal'
+  | 'campus-spawn';
 
 export type DistrictType = 'core' | 'ai-lab' | 'backend-foundry' | 'frontend-plaza' | 'systems-depot';
 

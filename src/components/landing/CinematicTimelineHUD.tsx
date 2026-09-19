@@ -6,12 +6,12 @@ interface TimelineHUDProps {
 }
 
 const CHAPTERS = [
-  { label: '01 // SKYLINE', target: 0.05 },
-  { label: '02 // APPROACH', target: 0.32 },
-  { label: '03 // ENTRY', target: 0.52 },
-  { label: '04 // DEVELOPER', target: 0.68 },
-  { label: '05 // WORKSTATION', target: 0.82 },
-  { label: '06 // TERMINAL', target: 0.96 },
+  { label: '01 // SKYLINE', target: 0.0 },
+  { label: '02 // APPROACH', target: 0.20 },
+  { label: '03 // ENTRY', target: 0.40 },
+  { label: '04 // DEVELOPER', target: 0.60 },
+  { label: '05 // WORKSTATION', target: 0.80 },
+  { label: '06 // TERMINAL', target: 1.0 },
 ];
 
 export const CinematicTimelineHUD: React.FC<TimelineHUDProps> = ({
@@ -20,13 +20,14 @@ export const CinematicTimelineHUD: React.FC<TimelineHUDProps> = ({
 }) => {
   // Determine active chapter based on progress
   let activeIndex = 0;
-  if (progress > 0.88) activeIndex = 5;
-  else if (progress > 0.74) activeIndex = 4;
-  else if (progress > 0.58) activeIndex = 3;
-  else if (progress > 0.42) activeIndex = 2;
-  else if (progress > 0.18) activeIndex = 1;
+  if (progress >= 0.88) activeIndex = 5;
+  else if (progress >= 0.70) activeIndex = 4;
+  else if (progress >= 0.50) activeIndex = 3;
+  else if (progress >= 0.30) activeIndex = 2;
+  else if (progress >= 0.10) activeIndex = 1;
 
   const currentChapter = CHAPTERS[activeIndex];
+  const progressPct = Math.round(progress * 100);
 
   return (
     <div className="cinematic-hud-overlay" aria-label="Cinematic timeline navigation">
@@ -55,14 +56,14 @@ export const CinematicTimelineHUD: React.FC<TimelineHUDProps> = ({
         ))}
       </div>
 
-      {/* Bottom Scroll Prompt (fades when close to terminal) */}
-      {progress < 0.85 && (
-        <div className="scroll-indicator-prompt" aria-hidden="true">
-          <span className="scroll-arrow">↓</span>
-          <span className="scroll-text">SCROLL TO TRAVEL</span>
-          <span className="scroll-progress-pct">{Math.round(progress * 100)}%</span>
-        </div>
-      )}
+      {/* Bottom Scroll Prompt (continuously updates 0% to 100%) */}
+      <div className="scroll-indicator-prompt" aria-hidden="true">
+        <span className="scroll-arrow">{progress >= 0.96 ? '↵' : '↓'}</span>
+        <span className="scroll-text">
+          {progress >= 0.96 ? 'TERMINAL REACHED' : 'SCROLL TO TRAVEL'}
+        </span>
+        <span className="scroll-progress-pct">{progressPct}%</span>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Header } from './components/common/Header';
 import { CinematicLanding } from './components/landing/CinematicLanding';
+import { PortalTransition } from './components/transition/PortalTransition';
+import { CityEntryWorld } from './components/transition/CityEntryWorld';
 import { CityWorld } from './components/city/CityWorld';
 import { RecruiterView } from './components/recruiter/RecruiterView';
 import { EchoHub } from './components/echo/EchoHub';
@@ -16,16 +18,17 @@ export function App() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [activeDialogue, setActiveDialogue] = useState<DialogueNode | null>(null);
   const [activeCaseStudy, setActiveCaseStudy] = useState<CaseStudy | null>(null);
-  const [transitionStatus, setTransitionStatus] = useState<string | null>(null);
 
-  // Phase 1 Event Boundary: Clean onEnterCity callback
+  // Phase 2: Enter activation starts the portal transition
   const handleEnterCity = () => {
-    console.log('[V-CITY EVENT] onEnterCity triggered — Phase 2 transition boundary ready.');
-    setTransitionStatus('Event: onEnterCity() triggered — Phase 2 transition ready.');
-    const timer = setTimeout(() => {
-      setTransitionStatus(null);
-    }, 4500);
-    return () => clearTimeout(timer);
+    console.log('[V-CITY EVENT] ENTER activated — Initiating Phase 2 Portal Transition');
+    setCurrentMode('portal-transition');
+  };
+
+  // Called when the flyover descent arrives and settles into the Campus spawn
+  const handleTransitionComplete = () => {
+    console.log('[V-CITY EVENT] Transition completed — Settle at Campus Spawn');
+    setCurrentMode('city-entry');
   };
 
   const handleSelectBuilding = (building: BuildingData) => {
@@ -66,7 +69,7 @@ export function App() {
       setCurrentMode('recruiter');
       setActiveDialogue(null);
     } else if (action === 'ENTER_CITY') {
-      setCurrentMode('city');
+      setCurrentMode('city-entry');
       setActiveDialogue(null);
     } else if (action === 'OPEN_TERMINAL') {
       setIsTerminalOpen(true);
@@ -74,17 +77,35 @@ export function App() {
     }
   };
 
+  const isFullBleedMode =
+    currentMode === 'landing' ||
+    currentMode === 'portal-transition' ||
+    currentMode === 'city-entry';
+
   return (
     <div className="app-shell">
-      <Header
-        currentMode={currentMode}
-        onNavigate={(mode) => setCurrentMode(mode)}
-        onOpenTerminal={() => setIsTerminalOpen(true)}
-      />
+      {/* Hide header during the active portal transition sequence for full cinematic immersion */}
+      {currentMode !== 'portal-transition' && (
+        <Header
+          currentMode={currentMode}
+          onNavigate={(mode) => setCurrentMode(mode)}
+          onOpenTerminal={() => setIsTerminalOpen(true)}
+        />
+      )}
 
-      <main className={`main-content ${currentMode === 'landing' ? 'landing-mode' : ''}`}>
+      <main className={`main-content ${isFullBleedMode ? 'landing-mode' : ''}`}>
         {currentMode === 'landing' && (
           <CinematicLanding onEnterCity={handleEnterCity} />
+        )}
+
+        {currentMode === 'portal-transition' && (
+          <PortalTransition onComplete={handleTransitionComplete} />
+        )}
+
+        {currentMode === 'city-entry' && (
+          <div className="city-entry-container">
+            <CityEntryWorld isDescending={false} isSettled={true} />
+          </div>
         )}
 
         {currentMode === 'city' && (
@@ -98,13 +119,6 @@ export function App() {
 
         {currentMode === 'echo' && <EchoHub />}
       </main>
-
-      {/* Temporary Phase 1 Event Boundary Feedback */}
-      {transitionStatus && (
-        <div className="phase-toast badge-mono" role="status">
-          {transitionStatus}
-        </div>
-      )}
 
       {/* Overlays & Interactive HUD Elements */}
       <TypewriterDialog

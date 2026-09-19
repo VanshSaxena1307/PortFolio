@@ -1,0 +1,651 @@
+/* ==========================================================================
+   V-CITY PHASE 2: PORTAL TRANSITION & CITY ENTRY STYLING
+   Turbulence · Whiteout Expansion · Typewriter · High Flyover & Campus Spawn
+   ========================================================================== */
+
+.portal-transition-layer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 500;
+  overflow: hidden;
+  background-color: transparent;
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   PHASE A: ROOM TURBULENCE & ESCALATING SHAKE
+   ========================================================================== */
+.state-turbulence {
+  animation: cameraTurbulenceInitial 400ms ease-in-out infinite alternate;
+}
+
+.state-escalating {
+  animation: cameraTurbulenceEscalating 180ms ease-in-out infinite alternate;
+}
+
+@keyframes cameraTurbulenceInitial {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  25% { transform: translate3d(-2px, 1.5px, 0) rotate(-0.2deg); }
+  50% { transform: translate3d(2px, -1px, 0) rotate(0.15deg); }
+  75% { transform: translate3d(-1.5px, -1.5px, 0) rotate(-0.1deg); }
+  100% { transform: translate3d(1px, 2px, 0) rotate(0.2deg); }
+}
+
+@keyframes cameraTurbulenceEscalating {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  20% { transform: translate3d(-5px, 4px, 0) rotate(-0.6deg) scale(1.008); }
+  40% { transform: translate3d(6px, -4px, 0) rotate(0.5deg) scale(1.006); }
+  60% { transform: translate3d(-4px, -3px, 0) rotate(-0.4deg) scale(1.012); }
+  80% { transform: translate3d(5px, 5px, 0) rotate(0.6deg) scale(1.01); }
+  100% { transform: translate3d(-2px, 2px, 0) rotate(-0.2deg) scale(1.015); }
+}
+
+.environmental-turbulence-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 510;
+}
+
+.light-flicker-pulse {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 242, 254, 0.08);
+  animation: lightFlicker 220ms steps(3) infinite;
+}
+
+@keyframes lightFlicker {
+  0%, 100% { opacity: 0.1; }
+  33% { opacity: 0.45; background: rgba(255, 255, 255, 0.12); }
+  66% { opacity: 0.02; }
+}
+
+.monitor-bloom-surge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 55vw;
+  height: 45vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.5) 0%, rgba(255, 255, 255, 0.8) 40%, transparent 75%);
+  filter: blur(45px);
+  animation: bloomSurge 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes bloomSurge {
+  0% { transform: translate(-50%, -50%) scale(0.6); opacity: 0.3; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(2.4); opacity: 1; }
+}
+
+.chromatic-interference {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(244, 63, 94, 0.04) 0%,
+    rgba(0, 242, 254, 0.06) 50%,
+    rgba(16, 185, 129, 0.04) 100%
+  );
+  mix-blend-mode: screen;
+}
+
+/* ==========================================================================
+   PHASE B: WHITEOUT SCREEN & EXACT TYPEWRITER MESSAGE
+   ========================================================================== */
+.whiteout-screen-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 520;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 750ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.whiteout-screen-cover.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.whiteout-screen-cover.dissolving {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.whiteout-light-expansion {
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(circle at center, #ffffff 50%, #f0f7ff 75%, #e2eeff 100%);
+}
+
+.cinematic-typewriter-container {
+  position: relative;
+  z-index: 530;
+  max-width: min(840px, 88vw);
+  text-align: center;
+  padding: 24px;
+}
+
+.cinematic-typewriter-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.25rem, 3.2vw, 2.3rem);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: #0b111c;
+  text-transform: uppercase;
+  margin: 0;
+  user-select: none;
+}
+
+.cinematic-cursor {
+  display: inline-block;
+  margin-left: 4px;
+  font-weight: 300;
+  color: #0088aa;
+  animation: cursorBlink 700ms steps(2) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ==========================================================================
+   PHASE C: V-CITY ESTABLISHING SHOT & ISOMETRIC FLYOVER DESCENT
+   ========================================================================== */
+.city-entry-container {
+  position: absolute;
+  inset: 0;
+  z-index: 450;
+  width: 100vw;
+  height: 100vh;
+}
+
+.city-entry-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 30%, #081224 0%, #030712 70%, #02040a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+}
+
+/* Sky Backdrop */
+.entry-sky-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sky-star {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+.sky-star.s1 { width: 2px; height: 2px; top: 12%; left: 22%; opacity: 0.75; }
+.sky-star.s2 { width: 1.5px; height: 1.5px; top: 18%; left: 68%; opacity: 0.6; }
+.sky-star.s3 { width: 2px; height: 2px; top: 8%; left: 45%; opacity: 0.85; }
+.sky-star.s4 { width: 1.5px; height: 1.5px; top: 28%; left: 85%; opacity: 0.5; }
+
+.distant-aurora-glow {
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  width: 60vw;
+  height: 25vh;
+  background: radial-gradient(ellipse, rgba(0, 242, 254, 0.06) 0%, rgba(59, 130, 246, 0.04) 50%, transparent 80%);
+  filter: blur(50px);
+}
+
+.distant-city-skyline {
+  position: absolute;
+  top: 14%;
+  left: 0;
+  width: 100%;
+  height: 25vh;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+.skyline-silhouette-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ==========================================================================
+   CAMERA FLYOVER SEQUENCE
+   A. High above -> B. Over skyline -> C. Altitude drop -> D. Descent -> E. Settle
+   ========================================================================== */
+.entry-camera-rig {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+/* Stage A: Extremely High Above City */
+.entry-camera-rig.camera-high-above {
+  transform: translate3d(0, -180px, -1400px) rotateX(72deg) rotateZ(-30deg) scale(0.38);
+  transition: transform 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Stage B & C & D: Descending Toward Campus */
+.entry-camera-rig.camera-descending-campus {
+  transform: translate3d(0, -20px, -300px) rotateX(60deg) rotateZ(-40deg) scale(0.78);
+  transition: transform 3200ms cubic-bezier(0.2, 0.8, 0.25, 1);
+}
+
+/* Stage E & F: Settle into Fixed 3/4 Isometric Perspective */
+.entry-camera-rig.camera-settled-isometric {
+  transform: translate3d(0, 30px, 0px) rotateX(55deg) rotateZ(-45deg) scale(1);
+  transition: transform 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The 3D World Diorama Stage */
+.isometric-world-stage {
+  position: relative;
+  width: 680px;
+  height: 680px;
+  transform-style: preserve-3d;
+}
+
+.world-ground-plane {
+  position: absolute;
+  inset: 0;
+  background: #090e18;
+  border: 1px solid rgba(0, 242, 254, 0.18);
+  border-radius: 12px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), inset 0 0 80px rgba(0, 0, 0, 0.7);
+  transform-style: preserve-3d;
+}
+
+.ground-grid-matrix {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Elevated Transit Arteries */
+.expressway-artery {
+  position: absolute;
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.expressway-artery.north-south {
+  top: 0;
+  bottom: 0;
+  left: 280px;
+  width: 22px;
+}
+
+.expressway-artery.east-west {
+  left: 0;
+  right: 0;
+  top: 380px;
+  height: 22px;
+}
+
+.light-streak {
+  position: absolute;
+  display: block;
+}
+
+.light-streak.headlights {
+  width: 3px;
+  height: 100%;
+  left: 4px;
+  background: linear-gradient(to bottom, transparent 0%, #fef08a 50%, transparent 100%);
+  box-shadow: 0 0 10px #fef08a;
+  animation: trafficStreamDown 2.2s linear infinite;
+}
+
+.light-streak.taillights {
+  width: 3px;
+  height: 100%;
+  right: 4px;
+  background: linear-gradient(to bottom, transparent 0%, #f43f5e 50%, transparent 100%);
+  box-shadow: 0 0 10px #f43f5e;
+  animation: trafficStreamUp 2.8s linear infinite;
+}
+
+.light-streak.headlights-rev {
+  height: 3px;
+  width: 100%;
+  top: 4px;
+  background: linear-gradient(to right, transparent 0%, #fef08a 50%, transparent 100%);
+  box-shadow: 0 0 10px #fef08a;
+  animation: trafficStreamRight 3s linear infinite;
+}
+
+.light-streak.taillights-rev {
+  height: 3px;
+  width: 100%;
+  bottom: 4px;
+  background: linear-gradient(to right, transparent 0%, #f43f5e 50%, transparent 100%);
+  box-shadow: 0 0 10px #f43f5e;
+  animation: trafficStreamLeft 2.4s linear infinite;
+}
+
+@keyframes trafficStreamDown {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes trafficStreamUp {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(-100%); }
+}
+
+@keyframes trafficStreamRight {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes trafficStreamLeft {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Street Lantern Grid */
+.street-lanterns {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lantern {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #00f2fe;
+  box-shadow: 0 0 8px #00f2fe;
+}
+
+.lantern.l1 { top: 120px; left: 160px; }
+.lantern.l2 { top: 220px; left: 240px; }
+.lantern.l3 { top: 320px; left: 200px; }
+.lantern.l4 { top: 440px; left: 340px; }
+.lantern.l5 { top: 260px; left: 460px; }
+.lantern.l6 { top: 180px; left: 520px; }
+
+/* Building Clusters */
+.building-cluster {
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+.cluster-north { top: 40px; left: 60px; }
+.cluster-east { top: 60px; right: 50px; }
+.cluster-west { bottom: 50px; left: 50px; }
+
+.entry-tower {
+  position: absolute;
+  background: linear-gradient(180deg, #131b2c 0%, #090d16 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.7);
+  transform-style: preserve-3d;
+}
+
+.t-tall-1 { width: 75px; height: 160px; top: 0; left: 0; }
+.t-mid-1 { width: 60px; height: 110px; top: 40px; left: 90px; }
+.t-wide-1 { width: 90px; height: 70px; top: 120px; left: 20px; }
+
+.t-tall-2 { width: 70px; height: 150px; top: 0; right: 0; }
+.t-mid-2 { width: 65px; height: 95px; top: 60px; right: 85px; }
+
+.t-wide-2 { width: 85px; height: 80px; bottom: 0; left: 0; }
+.t-tall-3 { width: 70px; height: 140px; bottom: 20px; left: 100px; }
+
+.tower-roof {
+  height: 8px;
+  background: #1e293b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tower-windows {
+  height: calc(100% - 8px);
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.25) 1px, transparent 1.5px);
+  background-size: 8px 12px;
+  opacity: 0.6;
+}
+
+.tower-windows.cyan-glow {
+  background-image:
+    radial-gradient(circle, rgba(0, 242, 254, 0.45) 1px, transparent 1.5px);
+}
+
+.tower-windows.amber-glow {
+  background-image:
+    radial-gradient(circle, rgba(245, 158, 11, 0.45) 1px, transparent 1.5px);
+}
+
+/* ==========================================================================
+   DESTINATION: CAMPUS DISTRICT SPAWN PLACEHOLDER
+   ========================================================================== */
+.campus-spawn-nexus {
+  position: absolute;
+  top: 480px;
+  left: 420px;
+  width: 140px;
+  height: 140px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+.spawn-halo-pulse {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.25) 0%, transparent 70%);
+  animation: spawnPulse 2.4s ease-in-out infinite;
+}
+
+.spawn-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(0, 242, 254, 0.5);
+}
+
+.spawn-ring.outer {
+  width: 100px;
+  height: 100px;
+  animation: ringRotateClockwise 16s linear infinite;
+}
+
+.spawn-ring.inner {
+  width: 60px;
+  height: 60px;
+  border-color: rgba(245, 158, 11, 0.6);
+  animation: ringRotateCounter 10s linear infinite;
+}
+
+@keyframes ringRotateClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ringRotateCounter {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.spawn-pedestal {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #00f2fe;
+  box-shadow: 0 0 20px #00f2fe, 0 0 40px rgba(0, 242, 254, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spawn-core-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.spawn-beacon-tag {
+  position: absolute;
+  top: -46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  white-space: nowrap;
+  background: rgba(4, 7, 14, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 242, 254, 0.35);
+  padding: 4px 10px;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+.beacon-coord {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: 0.06em;
+}
+
+.beacon-status {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-muted);
+}
+
+@keyframes spawnPulse {
+  0%, 100% { transform: scale(0.9); opacity: 0.4; }
+  50% { transform: scale(1.3); opacity: 0.85; }
+}
+
+/* Atmospheric Haze Layer */
+.entry-volumetric-haze {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 40%, rgba(2, 5, 12, 0.65) 100%);
+  pointer-events: none;
+}
+
+/* HUD telemetry when settled */
+.entry-settled-hud {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 540;
+  pointer-events: none;
+  animation: fadeInHud 600ms ease forwards;
+}
+
+.entry-settled-hud .hud-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(7, 12, 20, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  box-shadow: 0 4px 24px rgba(0, 242, 254, 0.25);
+}
+
+.entry-settled-hud .hud-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 10px var(--accent-emerald);
+}
+
+@keyframes fadeInHud {
+  from { opacity: 0; transform: translate(-50%, 12px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ==========================================================================
+   REDUCED MOTION & ACCESSIBILITY
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .state-turbulence,
+  .state-escalating,
+  .monitor-bloom-surge,
+  .entry-camera-rig,
+  .spawn-ring,
+  .spawn-halo-pulse,
+  .light-streak {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .entry-camera-rig {
+    transform: translate3d(0, 30px, 0px) rotateX(55deg) rotateZ(-45deg) scale(1) !important;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+@media (max-width: 768px) {
+  .cinematic-typewriter-text {
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+  }
+
+  .isometric-world-stage {
+    width: 480px;
+    height: 480px;
+  }
+
+  .campus-spawn-nexus {
+    top: 340px;
+    left: 280px;
+  }
+
+  .expressway-artery.north-south {
+    left: 200px;
+  }
+
+  .expressway-artery.east-west {
+    top: 260px;
+  }
+
+  .entry-settled-hud .hud-badge {
+    font-size: 0.7rem;
+    padding: 6px 14px;
+  }
+}

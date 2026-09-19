@@ -26,8 +26,8 @@ export const Header: React.FC<HeaderProps> = ({ currentMode, onNavigate, onOpenT
           Landing
         </button>
         <button
-          className={`nav-btn ${currentMode === 'city' ? 'active' : ''}`}
-          onClick={() => onNavigate('city')}
+          className={`nav-btn ${currentMode === 'city' || currentMode === 'city-entry' ? 'active' : ''}`}
+          onClick={() => onNavigate('city-entry')}
         >
           V-City Map
         </button>
