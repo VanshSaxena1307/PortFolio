@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Header } from './components/common/Header';
 import { CinematicLanding } from './components/landing/CinematicLanding';
 import { PortalTransition } from './components/transition/PortalTransition';
-import { CityEntryWorld } from './components/transition/CityEntryWorld';
 import { CityWorld } from './components/city/CityWorld';
 import { RecruiterView } from './components/recruiter/RecruiterView';
 import { EchoHub } from './components/echo/EchoHub';
@@ -124,17 +123,15 @@ export function App() {
           <PortalTransition onComplete={handleTransitionComplete} />
         )}
 
-        {currentMode === 'city-entry' && (
+        {(currentMode === 'city-entry' || currentMode === 'city') && (
           <div className="city-entry-container">
-            <CityEntryWorld isDescending={false} isSettled={true} />
+            <CityWorld
+              isDescending={false}
+              isSettled={true}
+              onSelectBuilding={handleSelectBuilding}
+              onSelectNPC={handleSelectNPC}
+            />
           </div>
-        )}
-
-        {currentMode === 'city' && (
-          <CityWorld
-            onSelectBuilding={handleSelectBuilding}
-            onSelectNPC={handleSelectNPC}
-          />
         )}
 
         {currentMode === 'recruiter' && <RecruiterView />}

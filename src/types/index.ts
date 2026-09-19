@@ -11,7 +11,29 @@ export type PortalPhase =
   | 'city-reveal'
   | 'campus-spawn';
 
-export type DistrictType = 'core' | 'ai-lab' | 'backend-foundry' | 'frontend-plaza' | 'systems-depot';
+export type DistrictType =
+  | 'campus'
+  | 'tech'
+  | 'research'
+  | 'arena'
+  | 'echo'
+  | 'core'
+  | 'ai-lab'
+  | 'backend-foundry'
+  | 'frontend-plaza'
+  | 'systems-depot';
+
+export type DistrictId = 'campus' | 'tech' | 'research' | 'arena' | 'echo';
+
+export type BuildingArchetype =
+  | 'office-tower'
+  | 'midrise-commercial'
+  | 'university-building'
+  | 'research-lab'
+  | 'arena-structure'
+  | 'residential-tower'
+  | 'industrial-service'
+  | 'lowrise-storefront';
 
 export interface Vector3D {
   x: number;
@@ -28,10 +50,33 @@ export interface BuildingData {
   size: Vector3D;
   color: string;
   accentColor: string;
+  archetype?: BuildingArchetype;
+  reservedProject?: string;
+  roofDetail?: 'helipad' | 'antenna' | 'atrium' | 'mech-unit' | 'spire' | 'terrace' | 'dome';
+  windowPattern?: 'grid' | 'ribbon' | 'scattered' | 'atrium-glow';
   relatedCaseStudyId?: string;
-  status: 'operational' | 'in-progress' | 'archived';
+  status: 'operational' | 'in-progress' | 'archived' | 'reserved';
   description: string;
   technologies: string[];
+}
+
+export interface DistrictData {
+  id: DistrictId;
+  name: string;
+  subtitle: string;
+  tagline: string;
+  cardinal: 'NORTH' | 'SOUTH' | 'EAST' | 'WEST' | 'CENTER';
+  position: Vector3D;
+  colorTheme: {
+    primary: string;
+    accent: string;
+    ambientGlow: string;
+  };
+  lightingProfile: {
+    windowTone: 'warm-amber' | 'cool-cyan' | 'mixed-white' | 'deep-blue';
+    streetLampColor: string;
+  };
+  buildings: BuildingData[];
 }
 
 export interface NPCData {
