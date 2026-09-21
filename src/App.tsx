@@ -10,7 +10,6 @@ import { TypewriterDialog } from './components/hud/TypewriterDialog';
 import { CaseStudyModal } from './components/case-study/CaseStudyModal';
 import { AppMode, BuildingData, CaseStudy, DialogueNode, NPCData } from './types';
 import { DIALOGUE_TREES } from './data/dialogues';
-import { CASE_STUDIES } from './data/caseStudies';
 
 export function App() {
   const [currentMode, setCurrentMode] = useState<AppMode>('landing');
@@ -31,22 +30,7 @@ export function App() {
   };
 
   const handleSelectBuilding = (building: BuildingData) => {
-    if (building.relatedCaseStudyId) {
-      const study = CASE_STUDIES.find((c) => c.id === building.relatedCaseStudyId);
-      if (study) {
-        setActiveCaseStudy(study);
-        return;
-      }
-    }
-    setActiveDialogue({
-      id: `dialogue-${building.id}`,
-      speaker: `${building.name} // Telemetry`,
-      text: `${building.description} Status: ${building.status.toUpperCase()}.`,
-      options: [
-        { text: 'Acknowledge', action: 'CLOSE' },
-        { text: 'Open Recruiter Dossier', action: 'OPEN_RECRUITER' },
-      ],
-    });
+    console.log('[V-CITY EVENT] Selected building for in-world inspection:', building.id, building.name);
   };
 
   const handleSelectNPC = (npc: NPCData) => {

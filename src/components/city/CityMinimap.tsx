@@ -1,16 +1,19 @@
 import React from 'react';
-import { CITY_DISTRICTS } from '../../data/cityData';
-import { DistrictId } from '../../types';
+import { ALL_CITY_BUILDINGS, CITY_DISTRICTS } from '../../data/cityData';
+import { BuildingData, DistrictId } from '../../types';
 
 interface CityMinimapProps {
   currentDistrictId: DistrictId;
   onSelectDistrict?: (districtId: DistrictId) => void;
   focusedBuildingId?: string | null;
+  onSelectBuildingNode?: (building: BuildingData) => void;
 }
 
 export const CityMinimap: React.FC<CityMinimapProps> = ({
   currentDistrictId,
   onSelectDistrict,
+  focusedBuildingId,
+  onSelectBuildingNode,
 }) => {
   // Map world coordinates (-400 to +400) to SVG viewport (20 to 120, center 70)
   const mapCoord = (x: number, z: number) => {
@@ -91,6 +94,33 @@ export const CityMinimap: React.FC<CityMinimapProps> = ({
               />
               {/* Node Center */}
               <circle cx={cx} cy={cy} r={isCurrent ? 3 : 2} fill={nodeColor} />
+            </g>
+          );
+        })}
+
+        {/* Render Building Nodes */}
+        {ALL_CITY_BUILDINGS.map((bldg) => {
+          const { cx, cy } = mapCoord(bldg.coordinates.x, bldg.coordinates.z);
+          const isSelected = bldg.id === focusedBuildingId;
+          return (
+            <g
+              key={bldg.id}
+              className={`minimap-building-node ${isSelected ? 'focused' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onSelectBuildingNode?.(bldg);
+              }}
+              style={{ cursor: 'pointer' }}
+            >
+              <title>{bldg.name}</title>
+              <circle
+                cx={cx}
+                cy={cy}
+                r={isSelected ? 3.5 : 1.8}
+                fill={isSelected ? '#38bdf8' : 'rgba(255, 255, 255, 0.45)'}
+                stroke={isSelected ? '#ffffff' : 'rgba(0, 0, 0, 0.5)'}
+                strokeWidth={isSelected ? 1 : 0.5}
+              />
             </g>
           );
         })}

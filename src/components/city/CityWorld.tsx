@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { ALL_CITY_BUILDINGS, CITY_DISTRICTS } from '../../data/cityData';
-import { BuildingData, DistrictId, NPCData } from '../../types';
+import { BuildingData, CameraState, DistrictId, InteractionPhase, NPCData } from '../../types';
 import { CityHUD } from './CityHUD';
 import { CityMinimap } from './CityMinimap';
 import { BuildingDispatcher } from './archetypes/BuildingDispatcher';
+import { BuildingInspectionPanel } from './BuildingInspectionPanel';
 import './city.css';
 
 interface CityWorldProps {
@@ -26,8 +27,27 @@ export const CityWorld: React.FC<CityWorldProps> = ({
   // Active district telemetry (defaults to Campus spawn)
   const [activeDistrictId, setActiveDistrictId] = useState<DistrictId>('campus');
   const [hoveredBuilding, setHoveredBuilding] = useState<BuildingData | null>(null);
+  const [selectedBuilding, setSelectedBuilding] = useState<BuildingData | null>(null);
 
-  // Camera Zoom factor: bounded between 0.82 (City) and 1.85 (Building)
+  // Phase 6 Interaction State
+  const [interactionPhase, setInteractionPhase] = useState<InteractionPhase>('IDLE');
+
+  // Stored Camera State for exact return upon closing inspection
+  const [storedCameraState, setStoredCameraState] = useState<CameraState>({
+    camX: 0,
+    camY: 60,
+    zoom: 1.25,
+    districtId: 'campus',
+  });
+
+  // Dynamic Camera Center Offset (in screen space pixels)
+  const [camOffset, setCamOffset] = useState<{ x: number; y: number }>({ x: 0, y: 60 });
+  // Subtle focus drift when hovering (~10-15px max)
+  const [hoverDrift, setHoverDrift] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  // Target building 2D screen coordinate for adaptive connector line
+  const [targetScreenPos, setTargetScreenPos] = useState<{ x: number; y: number } | null>(null);
+
+  // Camera Zoom factor: bounded between 0.82 (City) and 1.95 (Building Inspection)
   const [zoomLevel, setZoomLevel] = useState(1.25);
   // Mouse parallax tilt & shift
   const [mouseParallax, setMouseParallax] = useState({ x: 0, y: 0 });
@@ -60,9 +80,11 @@ export const CityWorld: React.FC<CityWorldProps> = ({
     return () => clearTimeout(fadeTimer);
   }, [isSettled]);
 
-  // Handle subtle edge parallax when moving mouse
+  // Handle subtle edge parallax when moving mouse (frozen during inspection)
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!hasControl || motionReduced) return;
+    if (interactionPhase === 'FOCUSING' || interactionPhase === 'INSPECTING') return;
+
     const { innerWidth, innerHeight } = window;
     const normX = (e.clientX / innerWidth - 0.5) * 2;
     const normY = (e.clientY / innerHeight - 0.5) * 2;
@@ -73,9 +95,11 @@ export const CityWorld: React.FC<CityWorldProps> = ({
     });
   };
 
-  // Smooth bounded zoom via scroll wheel
+  // Smooth bounded zoom via scroll wheel (only when idle/hovering)
   const handleWheel = (e: React.WheelEvent) => {
     if (!hasControl || motionReduced) return;
+    if (interactionPhase === 'FOCUSING' || interactionPhase === 'INSPECTING') return;
+
     setZoomLevel((prev) => {
       const delta = e.deltaY * -0.00075;
       return Math.min(1.85, Math.max(0.82, prev + delta));
@@ -89,6 +113,177 @@ export const CityWorld: React.FC<CityWorldProps> = ({
     return 'District';
   };
 
+  // Helper: Project world (x, z) coordinates into 3D isometric screen space
+  const projectBuildingToScreen = useCallback((x: number, z: number, zoom: number) => {
+    // Stage rotation: rotateZ(-45deg), rotateX(54.74deg)
+    const px = ((x + z) / 1.4142) * zoom;
+    const py = ((-x + z) / 2.4495) * zoom;
+    return { px, py };
+  }, []);
+
+  // Update target building screen position for connector line
+  const updateTargetScreenPosition = useCallback((bldg: BuildingData) => {
+    const node = document.getElementById(`bldg-node-${bldg.id}`);
+    if (node) {
+      const rect = node.getBoundingClientRect();
+      setTargetScreenPos({
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+      });
+    }
+  }, []);
+
+  // Building Hover Handler
+  const handleBuildingHover = (bldg: BuildingData) => {
+    if (interactionPhase === 'FOCUSING' || interactionPhase === 'INSPECTING') return;
+
+    setHoveredBuilding(bldg);
+    setInteractionPhase('HOVERING');
+    setActiveDistrictId(bldg.district as DistrictId);
+
+    // Subtle focus drift toward hovered building (~10-14px max)
+    const { px, py } = projectBuildingToScreen(bldg.coordinates.x, bldg.coordinates.z, zoomLevel);
+    setHoverDrift({
+      x: -px * 0.045,
+      y: -py * 0.045,
+    });
+  };
+
+  // Building Mouse Leave Handler
+  const handleBuildingLeave = () => {
+    if (interactionPhase === 'FOCUSING' || interactionPhase === 'INSPECTING') return;
+
+    setHoveredBuilding(null);
+    setInteractionPhase('IDLE');
+    setHoverDrift({ x: 0, y: 0 });
+  };
+
+  // Building Click -> Cinematic Push-In & Inspection
+  const handleInspectBuilding = (bldg: BuildingData) => {
+    // If already inspecting this building, do nothing
+    if (selectedBuilding?.id === bldg.id && (interactionPhase === 'INSPECTING' || interactionPhase === 'FOCUSING')) {
+      return;
+    }
+
+    // Save previous camera state if not already inspecting
+    if (interactionPhase !== 'INSPECTING' && interactionPhase !== 'FOCUSING') {
+      setStoredCameraState({
+        camX: camOffset.x,
+        camY: camOffset.y,
+        zoom: zoomLevel,
+        districtId: activeDistrictId,
+      });
+    }
+
+    setInteractionPhase('FOCUSING');
+    setSelectedBuilding(bldg);
+    setActiveDistrictId(bldg.district as DistrictId);
+    setHoveredBuilding(null);
+    setHoverDrift({ x: 0, y: 0 });
+
+    // Target zoom framing building at ~30-40% visual composition
+    // Large structures get slightly more breathing room
+    const targetZoom = bldg.size.x > 100 || bldg.size.y > 120 ? 1.62 : 1.74;
+    const { px, py } = projectBuildingToScreen(bldg.coordinates.x, bldg.coordinates.z, targetZoom);
+
+    // Offset camera slightly opposite to where panel will dock to maximize visual balance
+    const sideOffset = px < 0 ? -45 : 45;
+    setCamOffset({
+      x: -px + sideOffset,
+      y: -py + 65,
+    });
+    setZoomLevel(targetZoom);
+
+    onSelectBuilding?.(bldg);
+
+    // After push-in animation finishes, transition to INSPECTING
+    const settleDuration = motionReduced ? 0 : 750;
+    setTimeout(() => {
+      setInteractionPhase('INSPECTING');
+      updateTargetScreenPosition(bldg);
+    }, settleDuration);
+  };
+
+  // Close Inspection -> Restore Previous Camera State
+  const handleCloseInspection = useCallback(() => {
+    if (interactionPhase !== 'INSPECTING' && interactionPhase !== 'FOCUSING') return;
+
+    setInteractionPhase('CLOSING');
+    setTargetScreenPos(null);
+
+    // Reverse camera smoothly back to the exact previous camera state
+    setCamOffset({
+      x: storedCameraState.camX,
+      y: storedCameraState.camY,
+    });
+    setZoomLevel(storedCameraState.zoom);
+    setActiveDistrictId(storedCameraState.districtId);
+
+    const restoreDuration = motionReduced ? 0 : 700;
+    setTimeout(() => {
+      setSelectedBuilding(null);
+      setInteractionPhase('IDLE');
+    }, restoreDuration);
+  }, [interactionPhase, storedCameraState, motionReduced]);
+
+  // Minimap Building Click: Travel camera without opening inspection panel
+  const handleMinimapBuildingClick = (bldg: BuildingData) => {
+    // If inspecting, close first
+    if (interactionPhase === 'INSPECTING' || interactionPhase === 'FOCUSING') {
+      setSelectedBuilding(null);
+      setTargetScreenPos(null);
+      setInteractionPhase('IDLE');
+    }
+
+    const travelZoom = 1.35;
+    const { px, py } = projectBuildingToScreen(bldg.coordinates.x, bldg.coordinates.z, travelZoom);
+    setCamOffset({
+      x: -px,
+      y: -py + 60,
+    });
+    setZoomLevel(travelZoom);
+    setActiveDistrictId(bldg.district as DistrictId);
+    setHoveredBuilding(bldg);
+
+    setTimeout(() => {
+      setHoveredBuilding((cur) => (cur?.id === bldg.id ? null : cur));
+    }, 2200);
+  };
+
+  // Minimap District Click: Pan camera toward district center
+  const handleMinimapDistrictClick = (districtId: DistrictId) => {
+    if (interactionPhase === 'INSPECTING' || interactionPhase === 'FOCUSING') {
+      setSelectedBuilding(null);
+      setTargetScreenPos(null);
+      setInteractionPhase('IDLE');
+    }
+
+    const dist = CITY_DISTRICTS.find((d) => d.id === districtId);
+    if (!dist) return;
+
+    const travelZoom = 1.25;
+    const { px, py } = projectBuildingToScreen(dist.position.x, dist.position.z, travelZoom);
+    setCamOffset({
+      x: -px,
+      y: -py + 60,
+    });
+    setZoomLevel(travelZoom);
+    setActiveDistrictId(districtId);
+  };
+
+  // Keyboard accessibility: ESC closes active inspection
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (interactionPhase === 'INSPECTING' || interactionPhase === 'FOCUSING') {
+          handleCloseInspection();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [interactionPhase, handleCloseInspection]);
+
   // Camera animation class state for flyover transition
   let cameraClass = 'camera-flyover-high';
   if (isSettled || motionReduced) {
@@ -97,12 +292,20 @@ export const CityWorld: React.FC<CityWorldProps> = ({
     cameraClass = 'camera-flyover-descent';
   }
 
+  const isInspectingOrFocusing =
+    interactionPhase === 'FOCUSING' || interactionPhase === 'INSPECTING';
+
   // Dynamic 3D transform combining fixed 3/4 isometric perspective, zoom, and parallax
+  const totalCamX = camOffset.x + (isInspectingOrFocusing ? 0 : hoverDrift.x + mouseParallax.x * -8);
+  const totalCamY = camOffset.y + (isInspectingOrFocusing ? 0 : hoverDrift.y + mouseParallax.y * -6);
+  const tiltX = 54.74 + (isInspectingOrFocusing ? 0 : mouseParallax.y);
+  const tiltZ = -45 + (isInspectingOrFocusing ? 0 : mouseParallax.x);
+
   const dynamicCameraTransform =
     isSettled && !motionReduced
-      ? `translate3d(${mouseParallax.x * -8}px, ${60 + mouseParallax.y * -6}px, 0px) rotateX(${
-          54.74 + mouseParallax.y
-        }deg) rotateZ(${-45 + mouseParallax.x}deg) scale(${zoomLevel})`
+      ? `translate3d(${totalCamX}px, ${totalCamY}px, 0px) rotateX(${tiltX}deg) rotateZ(${tiltZ}deg) scale(${zoomLevel})`
+      : motionReduced && isSettled
+      ? `translate3d(${camOffset.x}px, ${camOffset.y}px, 0px) rotateX(54.74deg) rotateZ(-45deg) scale(${zoomLevel})`
       : undefined;
 
   const currentDistrict =
@@ -140,9 +343,16 @@ export const CityWorld: React.FC<CityWorldProps> = ({
         style={dynamicCameraTransform ? { transform: dynamicCameraTransform } : undefined}
       >
         {/* World Diorama Stage */}
-        <div className="city-diorama-stage">
+        <div className={`city-diorama-stage ${isInspectingOrFocusing ? 'is-inspecting' : ''}`}>
           {/* Ground Plane (No harsh square boundary; organic radial fade) */}
-          <div className="city-ground-plane">
+          <div
+            className={`city-ground-plane ${hoveredBuilding && interactionPhase === 'HOVERING' ? 'has-hovered-building' : ''}`}
+            onClick={(e) => {
+              if (e.target === e.currentTarget && isInspectingOrFocusing) {
+                handleCloseInspection();
+              }
+            }}
+          >
             <div className="city-ground-grid" />
 
             {/* CURVED ARTERIAL & SECONDARY ROAD NETWORK */}
@@ -347,21 +557,41 @@ export const CityWorld: React.FC<CityWorldProps> = ({
 
             {/* 3D ARCHITECTURAL BUILDINGS (Extruded CSS 3D Models across all 5 Districts) */}
             {/* 3D ARCHITECTURAL BUILDINGS (Data-Driven Archetypes across all 5 Districts) */}
-            {ALL_CITY_BUILDINGS.map((bldg) => (
-              <BuildingDispatcher
-                key={bldg.id}
-                building={bldg}
-                onClick={() => onSelectBuilding?.(bldg)}
-                onMouseEnter={() => {
-                  setHoveredBuilding(bldg);
-                  setActiveDistrictId(bldg.district as DistrictId);
-                }}
-                onMouseLeave={() => setHoveredBuilding(null)}
-              />
-            ))}
+            {ALL_CITY_BUILDINGS.map((bldg) => {
+              const isHovered = hoveredBuilding?.id === bldg.id;
+              const isInspected = selectedBuilding?.id === bldg.id;
+              const isDeemphasized = isInspectingOrFocusing
+                ? !isInspected
+                : interactionPhase === 'HOVERING' && hoveredBuilding
+                ? !isHovered
+                : false;
+
+              return (
+                <BuildingDispatcher
+                  key={bldg.id}
+                  building={bldg}
+                  isHovered={isHovered}
+                  isInspected={isInspected}
+                  isDeemphasized={isDeemphasized}
+                  onClick={() => handleInspectBuilding(bldg)}
+                  onMouseEnter={() => handleBuildingHover(bldg)}
+                  onMouseLeave={handleBuildingLeave}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
+
+      {/* DIEGETIC INSPECTION PANEL */}
+      {selectedBuilding && (interactionPhase === 'INSPECTING' || interactionPhase === 'CLOSING') && (
+        <BuildingInspectionPanel
+          building={selectedBuilding}
+          targetScreenPosition={targetScreenPos}
+          onClose={handleCloseInspection}
+          motionReduced={motionReduced}
+        />
+      )}
 
       {/* SUBTLE 2-SECOND CAMPUS WELCOME MARKER */}
       {showWelcome && (
@@ -377,17 +607,31 @@ export const CityWorld: React.FC<CityWorldProps> = ({
       {/* MINIMAL FOUNDATION CITY HUD */}
       <CityHUD
         currentDistrictId={activeDistrictId}
-        currentDistrictName={hoveredBuilding ? hoveredBuilding.name : currentDistrict.name}
+        currentDistrictName={
+          selectedBuilding
+            ? selectedBuilding.name
+            : hoveredBuilding
+            ? hoveredBuilding.name
+            : currentDistrict.name
+        }
         currentDistrictSubtitle={
-          hoveredBuilding ? hoveredBuilding.tagline : currentDistrict.subtitle
+          selectedBuilding
+            ? selectedBuilding.tagline
+            : hoveredBuilding
+            ? hoveredBuilding.tagline
+            : currentDistrict.subtitle
         }
         zoomLevelName={getZoomLevelName()}
+        isInspecting={isInspectingOrFocusing}
+        inspectedBuildingName={selectedBuilding?.name}
       />
 
       {/* FOUNDATIONAL MINIMAP */}
       <CityMinimap
         currentDistrictId={activeDistrictId}
-        onSelectDistrict={(id) => setActiveDistrictId(id)}
+        focusedBuildingId={selectedBuilding?.id || hoveredBuilding?.id}
+        onSelectDistrict={handleMinimapDistrictClick}
+        onSelectBuildingNode={handleMinimapBuildingClick}
       />
     </div>
   );

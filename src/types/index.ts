@@ -142,6 +142,23 @@ export interface BuildingData {
   status: 'operational' | 'in-progress' | 'archived' | 'reserved';
   description: string;
   technologies: string[];
+  liveDemoUrl?: string;
+  githubUrl?: string;
+}
+
+export type InteractionPhase =
+  | 'IDLE'
+  | 'HOVERING'
+  | 'FOCUSING'
+  | 'INSPECTING'
+  | 'CLOSING'
+  | 'RETURNING';
+
+export interface CameraState {
+  camX: number;
+  camY: number;
+  zoom: number;
+  districtId: DistrictId;
 }
 
 export interface DistrictData {

@@ -199,6 +199,8 @@ export const CITY_DISTRICTS: DistrictData[] = [
         status: 'operational',
         description: 'Robust geofencing and real-time attendance verification platform managing dynamic radius validation.',
         technologies: ['React Native', 'Node.js', 'Express', 'MongoDB', 'Geofencing'],
+        liveDemoUrl: 'https://github.com/VanshSaxena1307',
+        githubUrl: 'https://github.com/VanshSaxena1307',
         secondaryVolumes: [
           {
             id: 'hajiri-atrium-wing',
@@ -283,6 +285,7 @@ export const CITY_DISTRICTS: DistrictData[] = [
         status: 'operational',
         description: 'Machine learning assisted receipt categorization, trend forecasting, and budget alerts inside an institution of fiscal security.',
         technologies: ['React', 'Python', 'FastAPI', 'Chart.js', 'SQLite'],
+        githubUrl: 'https://github.com/VanshSaxena1307',
         secondaryVolumes: [
           {
             id: 'expenseiq-portico',
@@ -325,6 +328,7 @@ export const CITY_DISTRICTS: DistrictData[] = [
         status: 'operational',
         description: 'Streaming weather visualizer parsing global station sensors into animated micro-climate maps via rotating Doppler radar.',
         technologies: ['Three.js', 'OpenWeather API', 'WebSockets', 'Vite'],
+        githubUrl: 'https://github.com/VanshSaxena1307',
         secondaryVolumes: [
           {
             id: 'climora-sensor-bunker',
@@ -374,6 +378,7 @@ export const CITY_DISTRICTS: DistrictData[] = [
         status: 'operational',
         description: 'Convolutional neural network for osteoarthritic knee diagnosis and cartilage degradation mapping in clean clinical chambers.',
         technologies: ['PyTorch', 'TensorFlow', 'Python', 'Medical Imaging (DICOM)'],
+        githubUrl: 'https://github.com/VanshSaxena1307',
         secondaryVolumes: [
           {
             id: 'qk-diagnostic-wing',

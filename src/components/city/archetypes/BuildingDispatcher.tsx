@@ -14,6 +14,9 @@ import { BuildingVolumeMesh } from './BuildingVolumeMesh';
 
 interface BuildingDispatcherProps {
   building: BuildingData;
+  isHovered?: boolean;
+  isInspected?: boolean;
+  isDeemphasized?: boolean;
   onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
@@ -21,6 +24,9 @@ interface BuildingDispatcherProps {
 
 export const BuildingDispatcher: React.FC<BuildingDispatcherProps> = ({
   building,
+  isHovered = false,
+  isInspected = false,
+  isDeemphasized = false,
   onClick,
   onMouseEnter,
   onMouseLeave,
@@ -84,9 +90,18 @@ export const BuildingDispatcher: React.FC<BuildingDispatcherProps> = ({
     }
   };
 
+  const interactionClasses = [
+    isHovered ? 'is-hovered' : '',
+    isInspected ? 'is-inspected' : '',
+    isDeemphasized ? 'is-deemphasized' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <div
-      className={`bldg-3d-wrapper archetype-${building.archetype || 'office-tower'} bldg-${building.id} lighting-${building.lightingProfile || 'warm-office'}`}
+      id={`bldg-node-${building.id}`}
+      className={`bldg-3d-wrapper archetype-${building.archetype || 'office-tower'} bldg-${building.id} lighting-${building.lightingProfile || 'warm-office'} ${interactionClasses}`}
       style={{
         left: `${posX}px`,
         top: `${posY}px`,
