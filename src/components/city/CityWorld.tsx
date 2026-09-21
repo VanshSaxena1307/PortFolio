@@ -3,6 +3,7 @@ import { ALL_CITY_BUILDINGS, CITY_DISTRICTS } from '../../data/cityData';
 import { BuildingData, DistrictId, NPCData } from '../../types';
 import { CityHUD } from './CityHUD';
 import { CityMinimap } from './CityMinimap';
+import { BuildingDispatcher } from './archetypes/BuildingDispatcher';
 import './city.css';
 
 interface CityWorldProps {
@@ -345,93 +346,19 @@ export const CityWorld: React.FC<CityWorldProps> = ({
             </div>
 
             {/* 3D ARCHITECTURAL BUILDINGS (Extruded CSS 3D Models across all 5 Districts) */}
-            {ALL_CITY_BUILDINGS.map((bldg) => {
-              const width = bldg.size.x;
-              const depth = bldg.size.z;
-              const height = bldg.size.y;
-              // Center origin offset inside 1300x1300 diorama stage
-              const posX = 650 + bldg.coordinates.x - width / 2;
-              const posY = 650 + bldg.coordinates.z - depth / 2;
-
-              return (
-                <div
-                  key={bldg.id}
-                  className={`bldg-3d-wrapper archetype-${bldg.archetype || 'office-tower'}`}
-                  style={{
-                    left: `${posX}px`,
-                    top: `${posY}px`,
-                    width: `${width}px`,
-                    height: `${depth}px`,
-                  }}
-                  onClick={() => onSelectBuilding?.(bldg)}
-                  onMouseEnter={() => {
-                    setHoveredBuilding(bldg);
-                    setActiveDistrictId(bldg.district as DistrictId);
-                  }}
-                  onMouseLeave={() => setHoveredBuilding(null)}
-                >
-                  {/* Ground Shadow */}
-                  <div className="bldg-ground-shadow" />
-
-                  {/* Front Face (Facing South) */}
-                  <div
-                    className="bldg-face-front"
-                    style={{
-                      height: `${height}px`,
-                      borderColor: bldg.accentColor ? `${bldg.accentColor}33` : undefined,
-                    }}
-                  >
-                    <div className={`windows-${bldg.windowPattern || 'grid'}`} />
-                  </div>
-
-                  {/* East Face (Facing East) */}
-                  <div
-                    className="bldg-face-east"
-                    style={{
-                      width: `${height}px`,
-                    }}
-                  >
-                    <div className={`windows-${bldg.windowPattern || 'grid'}`} />
-                  </div>
-
-                  {/* West Face (Facing West) */}
-                  <div
-                    className="bldg-face-west"
-                    style={{
-                      width: `${height}px`,
-                    }}
-                  />
-
-                  {/* North Face (Facing North) */}
-                  <div
-                    className="bldg-face-north"
-                    style={{
-                      height: `${height}px`,
-                    }}
-                  />
-
-                  {/* Roof Face (Top Deck) */}
-                  <div
-                    className="bldg-face-roof"
-                    style={{
-                      transform: `translate3d(0, 0, ${height}px)`,
-                      borderColor: bldg.accentColor ? `${bldg.accentColor}44` : undefined,
-                    }}
-                  >
-                    {/* Architectural Rooftop Details */}
-                    {bldg.roofDetail === 'antenna' && (
-                      <div className="roof-antenna-mast">
-                        <span className="warning-beacon-blip" />
-                      </div>
-                    )}
-                    {bldg.roofDetail === 'helipad' && <div className="roof-helipad">H</div>}
-                    {bldg.roofDetail === 'mech-unit' && <div className="roof-mech-unit" />}
-                    {bldg.roofDetail === 'dome' && <div className="roof-dome" />}
-                    {bldg.roofDetail === 'spire' && <div className="roof-spire" />}
-                  </div>
-                </div>
-              );
-            })}
+            {/* 3D ARCHITECTURAL BUILDINGS (Data-Driven Archetypes across all 5 Districts) */}
+            {ALL_CITY_BUILDINGS.map((bldg) => (
+              <BuildingDispatcher
+                key={bldg.id}
+                building={bldg}
+                onClick={() => onSelectBuilding?.(bldg)}
+                onMouseEnter={() => {
+                  setHoveredBuilding(bldg);
+                  setActiveDistrictId(bldg.district as DistrictId);
+                }}
+                onMouseLeave={() => setHoveredBuilding(null)}
+              />
+            ))}
           </div>
         </div>
       </div>

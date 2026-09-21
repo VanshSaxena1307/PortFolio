@@ -642,6 +642,35 @@
   background: radial-gradient(circle at center, rgba(56, 189, 248, 0.45) 0%, transparent 80%);
 }
 
+.windows-bank-tall {
+  position: absolute;
+  inset: 4px;
+  background-image:
+    linear-gradient(to right, rgba(251, 191, 36, 0.38) 3px, transparent 3px),
+    linear-gradient(to bottom, rgba(251, 191, 36, 0.15) 1px, transparent 1px);
+  background-size: 14px 100%, 100% 28px;
+}
+
+.windows-terminal-slots {
+  position: absolute;
+  inset: 5px;
+  background-image:
+    linear-gradient(to bottom, rgba(245, 158, 11, 0.4) 3px, transparent 3px);
+  background-size: 100% 9px;
+}
+
+.windows-commit-matrix {
+  position: absolute;
+  inset: 5px;
+  background-image:
+    radial-gradient(2px 2px at 20% 25%, rgba(57, 211, 83, 0.8) 1.5px, transparent 1.5px),
+    radial-gradient(2px 2px at 50% 30%, rgba(46, 160, 67, 0.9) 1.5px, transparent 1.5px),
+    radial-gradient(2px 2px at 80% 20%, rgba(38, 166, 65, 0.7) 1.5px, transparent 1.5px),
+    radial-gradient(2px 2px at 30% 70%, rgba(57, 211, 83, 0.85) 1.5px, transparent 1.5px),
+    radial-gradient(2px 2px at 70% 75%, rgba(14, 68, 41, 0.9) 1.5px, transparent 1.5px);
+  background-size: 16px 16px;
+}
+
 /* Rooftop Features */
 .roof-antenna-mast {
   position: absolute;
@@ -894,6 +923,1069 @@
 
 /* --------------------------------------------------------------------------
    10. Accessibility & Responsive Adjustments
+   -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   11. Phase 5 Architectural Archetypes & Project-Specific Identity
+   -------------------------------------------------------------------------- */
+
+/* Building Volume Mesh */
+.bldg-volume-mesh {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.bldg-secondary-volume {
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+/* Facade Styles */
+.facade-stone-glass .bldg-face-front {
+  background: linear-gradient(180deg, #182232 0%, #0d1624 100%);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+}
+
+.facade-laboratory-clean .bldg-face-front {
+  background: linear-gradient(180deg, #1c1836 0%, #0e0c1f 100%);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.facade-ribbon-office .bldg-face-front {
+  background: linear-gradient(180deg, #12243d 0%, #0a1526 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.facade-exposed-frame .bldg-face-front {
+  background: linear-gradient(180deg, #162030 0%, #0e1622 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.facade-academic-brick-glass .bldg-face-front {
+  background: linear-gradient(180deg, #1f2738 0%, #111724 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.facade-monolithic-obsidian .bldg-face-front {
+  background: linear-gradient(180deg, #071526 0%, #020710 100%) !important;
+  border: 1px solid rgba(0, 242, 254, 0.4) !important;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.95);
+}
+
+.facade-industrial-ribbed .bldg-face-front {
+  background: repeating-linear-gradient(90deg, #1e1b18 0px, #1e1b18 4px, #141210 4px, #141210 8px);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+/* BANK ARCHITECTURAL IDENTITY (ExpenseIQ) */
+.bank-building-root {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.bank-forecourt-platform {
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  bottom: -16px;
+  height: 20px;
+  background: #090f1a;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 2px;
+  transform: translate3d(0, 0, 1px);
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+}
+
+.bank-bollard {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #fbbf24;
+  border-radius: 50%;
+  transform: translate3d(0, 0, 5px);
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.6);
+}
+
+.bank-facade-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bank-vault-foundation {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26%;
+  background: linear-gradient(180deg, #1e293b 0%, #0a0f18 100%);
+  border-top: 1.5px solid rgba(251, 191, 36, 0.4);
+}
+
+.bank-colonnade-row {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 26%;
+  top: 12px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.bank-column {
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(90deg, #64748b 0%, #cbd5e1 50%, #475569 100%);
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+.bank-gold-clerestory {
+  position: absolute;
+  inset: 12px 14px 28% 14px;
+  background: radial-gradient(ellipse at 50% 60%, rgba(251, 191, 36, 0.35) 0%, transparent 75%);
+  pointer-events: none;
+}
+
+.bank-entrance-portal {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 28px;
+  background: #090d14;
+  border: 1.5px solid rgba(251, 191, 36, 0.6);
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bank-portico-entablature {
+  width: 115%;
+  height: 6px;
+  background: linear-gradient(180deg, #d97706 0%, #78350f 100%);
+  border-radius: 1px;
+  transform: translate3d(0, 0, 4px);
+}
+
+.bank-pediment-crest {
+  width: 10px;
+  height: 3px;
+  background: #fbbf24;
+  margin: 1px auto 0;
+  display: block;
+  border-radius: 1px;
+}
+
+.bank-bronze-doors {
+  width: 22px;
+  height: 17px;
+  background: #1c1917;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bank-security-scanner-glow {
+  width: 16px;
+  height: 2px;
+  background: #fbbf24;
+  box-shadow: 0 0 8px #fbbf24;
+}
+
+.bank-exterior-atm {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  width: 14px;
+  height: 18px;
+  background: #0c1524;
+  border: 1px solid #10b981;
+  border-radius: 2px;
+  padding: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.atm-screen-glow {
+  width: 100%;
+  height: 7px;
+  background: #10b981;
+  opacity: 0.85;
+  border-radius: 1px;
+  box-shadow: 0 0 6px #10b981;
+}
+
+.atm-keypad-bezel {
+  width: 100%;
+  height: 3px;
+  background: #334155;
+}
+
+.atm-status-led {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 4px #34d399;
+  margin-left: auto;
+}
+
+.bank-atrium-skylight {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate3d(0, 0, 3px);
+  width: 38px;
+  height: 32px;
+  background: radial-gradient(ellipse at center, rgba(251, 191, 36, 0.6) 0%, rgba(180, 83, 9, 0.2) 80%);
+  border: 1px solid rgba(251, 191, 36, 0.6);
+  box-shadow: 0 0 16px rgba(251, 191, 36, 0.4);
+}
+
+/* WEATHER STATION IDENTITY (Climora) */
+.weather-station-root {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.weather-pad-platform {
+  position: absolute;
+  inset: -8px;
+  background: #061322;
+  border: 1px dashed rgba(0, 242, 254, 0.3);
+  border-radius: 3px;
+  transform: translate3d(0, 0, 1px);
+}
+
+.weather-bunker-door {
+  position: absolute;
+  left: 14px;
+  bottom: 0;
+  width: 16px;
+  height: 16px;
+  background: #0b1d30;
+  border: 1.5px solid #00f2fe;
+  border-bottom: none;
+}
+
+.weather-telemetry-bar {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  width: 22px;
+  height: 4px;
+  background: rgba(0, 242, 254, 0.2);
+  border: 1px solid #00f2fe;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.weather-radar-pedestal {
+  position: absolute;
+  left: 24%;
+  top: 30%;
+  width: 22px;
+  height: 22px;
+  background: #1e293b;
+  border: 1px solid rgba(0, 242, 254, 0.4);
+  border-radius: 3px;
+  transform: translate3d(0, 0, 4px);
+  transform-style: preserve-3d;
+}
+
+.weather-radar-dome {
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #0284c7 0%, #082f49 80%);
+  border: 1px solid #00f2fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+.weather-radar-dish-rotor {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 242, 254, 0.9);
+  border-right-color: transparent;
+  animation: radarSpin 3.2s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes radarSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.weather-anemometer-mast {
+  position: absolute;
+  right: 20%;
+  top: 25%;
+  width: 2px;
+  height: 22px;
+  background: #94a3b8;
+  transform: translate3d(0, 0, 14px);
+  transform-style: preserve-3d;
+}
+
+.anemometer-cups-rotor {
+  position: absolute;
+  top: 0;
+  left: -6px;
+  width: 14px;
+  height: 14px;
+  animation: anemometerSpin 1.4s linear infinite;
+}
+
+@keyframes anemometerSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.wind-cup {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 6px #00f2fe;
+}
+
+.wind-cup.cup-1 { top: 0; left: 5px; }
+.wind-cup.cup-2 { bottom: 1px; left: 1px; }
+.wind-cup.cup-3 { bottom: 1px; right: 1px; }
+
+.weather-comms-lattice {
+  position: absolute;
+  right: 18%;
+  bottom: 20%;
+  width: 3px;
+  height: 28px;
+  background: #64748b;
+  transform: translate3d(0, 0, 16px);
+}
+
+.comms-beacon-cyan {
+  position: absolute;
+  top: -3px;
+  left: -1.5px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00f2fe;
+  box-shadow: 0 0 10px #00f2fe;
+  animation: antennaBlink 1.2s steps(2) infinite;
+}
+
+/* RESEARCH LAB IDENTITY (Quantum Knee) */
+.research-lab-root {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.lab-foundation-plinth {
+  position: absolute;
+  inset: -4px;
+  background: #0f0a1c;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 2px;
+}
+
+.lab-airlock-entrance {
+  position: absolute;
+  left: 18px;
+  bottom: 0;
+  width: 22px;
+  height: 20px;
+  background: #130924;
+  border: 1.5px solid #a855f7;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.airlock-scanner-beam {
+  width: 14px;
+  height: 2px;
+  background: #c084fc;
+  box-shadow: 0 0 8px #c084fc;
+  animation: scannerSweep 2s ease-in-out infinite alternate;
+}
+
+@keyframes scannerSweep {
+  from { transform: translateY(-4px); }
+  to { transform: translateY(4px); }
+}
+
+.lab-diagnostic-viewchamber {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 32px;
+  height: 24px;
+  background: rgba(88, 28, 135, 0.4);
+  border: 1px solid rgba(192, 132, 252, 0.6);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.diagnostic-core-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(168, 85, 247, 0.6) 0%, transparent 80%);
+  animation: diagPulse 3s ease-in-out infinite;
+}
+
+@keyframes diagPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.95; }
+}
+
+.cantilever-glass-chamber {
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 17, 69, 0.7);
+  border: 1px solid rgba(192, 132, 252, 0.5);
+}
+
+.specimen-analysis-illumination {
+  position: absolute;
+  inset: 4px;
+  background: radial-gradient(circle at center, rgba(192, 132, 252, 0.6) 0%, rgba(56, 189, 248, 0.2) 60%, transparent 85%);
+}
+
+/* HACKATHON ARENA IDENTITY */
+.arena-building-root {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.arena-public-plaza {
+  position: absolute;
+  inset: -14px -10px -20px -10px;
+  background: #140d05;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 4px;
+  transform: translate3d(0, 0, 1px);
+}
+
+.arena-grand-canopy {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 68px;
+  height: 24px;
+  background: #1f1204;
+  border: 1.5px solid rgba(245, 158, 11, 0.6);
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+}
+
+.arena-display-ribbon {
+  width: 100%;
+  height: 6px;
+  background: #291804;
+  border-bottom: 1px solid #f59e0b;
+  overflow: hidden;
+}
+
+.ribbon-pulse-bar {
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, #fbbf24 50%, transparent 100%);
+  animation: eventRibbonShift 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes eventRibbonShift {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(180%); }
+}
+
+.arena-crown-dome {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate3d(0, 0, 10px);
+  width: 62px;
+  height: 58px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #78350f 0%, #1c0f02 80%);
+  border: 1.5px solid rgba(245, 158, 11, 0.6);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.stage-light-mast {
+  position: absolute;
+  top: 12%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 14px 4px rgba(251, 191, 36, 0.8);
+}
+
+.stage-light-mast.left { left: 15%; }
+.stage-light-mast.right { right: 15%; }
+
+/* NCC TRAINING FACILITY IDENTITY */
+.training-facility-root {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.ncc-parade-ground-attachment {
+  position: absolute;
+  left: 100%;
+  top: -10px;
+  width: 115px;
+  height: 95px;
+  background: #0f0d0b;
+  border: 1.5px solid rgba(251, 191, 36, 0.4);
+  border-radius: 2px;
+  transform: translate3d(0, 0, 1px);
+  transform-style: preserve-3d;
+  margin-left: 8px;
+}
+
+.drill-lines-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.parade-floodlight {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  transform-style: preserve-3d;
+}
+
+.parade-floodlight.fl-top-left { top: 6px; left: 6px; }
+.parade-floodlight.fl-top-right { top: 6px; right: 6px; }
+.parade-floodlight.fl-bot-left { bottom: 6px; left: 6px; }
+.parade-floodlight.fl-bot-right { bottom: 6px; right: 6px; }
+
+.floodlight-pole {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #78716c;
+  transform: translate3d(0, 0, 18px);
+}
+
+.floodlight-head {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fef08a;
+  box-shadow: 0 0 10px #fef08a;
+  transform: translate3d(-1px, -1px, 19px);
+}
+
+.floodlight-ground-wash {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(254, 240, 138, 0.35) 0%, transparent 70%);
+  filter: blur(6px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.ncc-security-portal {
+  position: absolute;
+  left: 16px;
+  bottom: 0;
+  width: 20px;
+  height: 18px;
+  background: #0c0b0a;
+  border: 1.5px solid rgba(251, 191, 36, 0.6);
+  border-bottom: none;
+}
+
+.ncc-equipment-bay-door {
+  position: absolute;
+  right: 14px;
+  bottom: 0;
+  width: 24px;
+  height: 18px;
+  background: repeating-linear-gradient(to bottom, #292524 0px, #292524 2px, #1c1917 2px, #1c1917 4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: none;
+}
+
+/* ACADEMIC HALL IDENTITY */
+.academic-building-root {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.academic-entrance-forecourt {
+  position: absolute;
+  inset: -8px -6px -14px -6px;
+  background: #0e1520;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 3px;
+  transform: translate3d(0, 0, 1px);
+}
+
+.academic-canopy-portico {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 22px;
+  background: #0b1424;
+  border: 1.5px solid rgba(56, 189, 248, 0.5);
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+}
+
+.canopy-glass-roof {
+  width: 100%;
+  height: 4px;
+  background: rgba(56, 189, 248, 0.3);
+  border-bottom: 1px solid #38bdf8;
+}
+
+.academic-clock-band {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #0f172a;
+  border: 1px solid rgba(254, 240, 138, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collegiate-clock-dial {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(254, 240, 138, 0.9);
+  box-shadow: 0 0 6px rgba(254, 240, 138, 0.8);
+}
+
+.academic-atrium-skylight {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate3d(0, 0, 3px);
+  width: 34px;
+  height: 26px;
+  background: radial-gradient(circle, rgba(254, 240, 138, 0.55) 0%, rgba(30, 41, 59, 0.5) 80%);
+  border: 1px solid rgba(254, 240, 138, 0.6);
+  box-shadow: 0 0 12px rgba(254, 240, 138, 0.3);
+}
+
+.skybridge-glass-enclosure {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 165, 233, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+}
+
+/* CONSTRUCTION SITE IDENTITY (Development / Skills) */
+.construction-building-root {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.construction-staging-yard {
+  position: absolute;
+  inset: -10px;
+  background: #090f1a;
+  border: 1.5px dashed #f59e0b;
+  border-radius: 2px;
+  transform: translate3d(0, 0, 1px);
+}
+
+.exposed-concrete-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.slab-floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #475569;
+  border-top: 1px solid #94a3b8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.slab-floor.floor-1 { bottom: 25%; }
+.slab-floor.floor-2 { bottom: 50%; }
+.slab-floor.floor-3 { bottom: 75%; }
+
+.structural-column {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #334155;
+  border-left: 1px solid #64748b;
+}
+
+.structural-column.col-1 { left: 20%; }
+.structural-column.col-2 { left: 50%; }
+.structural-column.col-3 { right: 20%; }
+
+.scaffolding-netting-wrap {
+  position: absolute;
+  inset: 4px;
+  background: repeating-linear-gradient(45deg, rgba(245, 158, 11, 0.12) 0px, rgba(245, 158, 11, 0.12) 4px, transparent 4px, transparent 8px);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  pointer-events: none;
+}
+
+.temporary-work-light {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+}
+
+.temporary-work-light.light-tier-1 { left: 12%; bottom: 35%; }
+.temporary-work-light.light-tier-2 { right: 14%; bottom: 65%; }
+
+.work-light-fixture {
+  width: 4px;
+  height: 4px;
+  background: #fbbf24;
+  border-radius: 1px;
+}
+
+.work-light-beam {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.6) 0%, transparent 70%);
+  filter: blur(3px);
+}
+
+.tower-crane-3d-assembly {
+  position: absolute;
+  left: 45%;
+  top: 35%;
+  width: 4px;
+  height: 4px;
+  transform-style: preserve-3d;
+}
+
+.crane-lattice-mast {
+  position: absolute;
+  width: 3px;
+  height: 32px;
+  background: repeating-linear-gradient(to bottom, #eab308 0px, #eab308 2px, #ca8a04 2px, #ca8a04 4px);
+  transform: translate3d(0, 0, 16px);
+}
+
+.crane-horizontal-jib {
+  position: absolute;
+  left: -8px;
+  width: 42px;
+  height: 3px;
+  background: #eab308;
+  border-bottom: 1px solid #a16207;
+  transform: translate3d(0, 0, 32px);
+  transform-style: preserve-3d;
+}
+
+.jib-trolley {
+  position: absolute;
+  left: 24px;
+  top: 0;
+  width: 4px;
+  height: 3px;
+  background: #713f12;
+}
+
+.hoist-cable-line {
+  position: absolute;
+  top: 3px;
+  left: 1.5px;
+  width: 1px;
+  height: 16px;
+  background: #cbd5e1;
+}
+
+.hoist-hook-load {
+  position: absolute;
+  top: 18px;
+  left: 0px;
+  width: 4px;
+  height: 4px;
+  background: #f59e0b;
+  border-radius: 1px;
+}
+
+.crane-counter-jib {
+  position: absolute;
+  right: 100%;
+  top: 0;
+  width: 12px;
+  height: 3px;
+  background: #eab308;
+  transform: translate3d(0, 0, 32px);
+}
+
+.counterweight-block {
+  position: absolute;
+  left: 0;
+  top: -2px;
+  width: 6px;
+  height: 6px;
+  background: #64748b;
+  border: 1px solid #334155;
+}
+
+.crane-beacon-red {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+  transform: translate3d(0, 0, 34px);
+  animation: antennaBlink 1s infinite;
+}
+
+/* DEVELOPER FACILITIES (LeetCode & GitHub) */
+.dev-facility-root {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.github-commit-matrix-facade {
+  position: absolute;
+  inset: 10px 8px 12px 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  pointer-events: none;
+}
+
+.commit-cell {
+  border-radius: 1px;
+  height: 8px;
+}
+
+.commit-cell.l0 { background: #161b22; }
+.commit-cell.l1 { background: #0e4429; }
+.commit-cell.l2 { background: #006d32; }
+.commit-cell.l3 { background: #26a641; box-shadow: 0 0 4px rgba(38, 166, 65, 0.4); }
+.commit-cell.l4 { background: #39d353; box-shadow: 0 0 8px rgba(57, 211, 83, 0.7); }
+
+.leetcode-terminal-facade {
+  position: absolute;
+  inset: 10px 8px 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.terminal-chamber {
+  flex: 1;
+  background: #0f1422;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  border-radius: 2px;
+  padding: 2px;
+}
+
+.code-syntax-lines {
+  width: 70%;
+  height: 2px;
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+}
+
+/* ECHO IDENTITY MONOLITH */
+.identity-monolith-root {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.monolith-ground-pedestal {
+  position: absolute;
+  inset: -4px;
+  background: #030810;
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  border-radius: 2px;
+  transform: translate3d(0, 0, 1px);
+}
+
+.monolith-geometric-void {
+  position: absolute;
+  left: 50%;
+  top: 22%;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 32px;
+  background: #02060d;
+  border: 1.5px solid rgba(0, 242, 254, 0.6);
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.95);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.void-cyan-prism-beam {
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(180deg, #00f2fe 0%, #38bdf8 100%);
+  box-shadow: 0 0 16px #00f2fe, 0 0 32px rgba(0, 242, 254, 0.6);
+  animation: echoVoidPulse 4s ease-in-out infinite;
+}
+
+@keyframes echoVoidPulse {
+  0%, 100% { opacity: 0.6; transform: scaleY(0.9); }
+  50% { opacity: 1; transform: scaleY(1.05); }
+}
+
+.monolith-chamfer-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(0, 242, 254, 0.4) 0%, transparent 100%);
+}
+
+.monolith-chamfer-edge.left { left: 4px; }
+.monolith-chamfer-edge.right { right: 4px; }
+
+.monolith-recessed-portal {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 16px;
+  background: #02050b;
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  border-bottom: none;
+}
+
+/* CONTEXTUAL SILHOUETTES */
+.contextual-silhouettes-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+.contextual-figure {
+  position: absolute;
+  width: 4px;
+  height: 8px;
+  transform-style: preserve-3d;
+  transform: translate3d(0, 0, 1px);
+}
+
+.figure-shadow {
+  position: absolute;
+  bottom: -1px;
+  left: -1px;
+  width: 6px;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 50%;
+}
+
+.figure-body {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px 2px 0 0;
+  background: #94a3b8;
+  transform-origin: bottom;
+  transform: rotateX(-90deg);
+}
+
+.role-bank-guard .figure-body {
+  background: #1e3a8a;
+  border-top: 1.5px solid #fbbf24;
+}
+
+.role-customer .figure-body {
+  background: #cbd5e1;
+}
+
+.role-researcher .figure-body {
+  background: #f8fafc;
+  box-shadow: 0 0 4px rgba(168, 85, 247, 0.5);
+}
+
+.role-cadet .figure-body {
+  background: #78716c;
+  border-top: 1.5px solid #fbbf24;
+}
+
+.role-construction-worker .figure-body {
+  background: #f97316;
+}
+
+.hardhat-cap {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 4px;
+  height: 2px;
+  background: #eab308;
+  border-radius: 1px;
+}
+
+.role-student .figure-body {
+  background: #38bdf8;
+}
+
+.role-spectator .figure-body {
+  background: #f59e0b;
+}
+
+.role-office-worker .figure-body {
+  background: #475569;
+}
+
+/* --------------------------------------------------------------------------
+   12. Accessibility & Responsive Adjustments
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .city-camera-rig,

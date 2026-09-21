@@ -33,12 +33,68 @@ export type BuildingArchetype =
   | 'arena-structure'
   | 'residential-tower'
   | 'industrial-service'
-  | 'lowrise-storefront';
+  | 'lowrise-storefront'
+  | 'bank'
+  | 'weather-station'
+  | 'training-facility'
+  | 'academic-hall'
+  | 'construction-site'
+  | 'developer-facility'
+  | 'identity-monolith'
+  | 'corporate-tech';
 
 export interface Vector3D {
   x: number;
   y: number;
   z: number;
+}
+
+export interface BuildingVolume {
+  id?: string;
+  relativeOffset: Vector3D; // offset relative to building origin (x, y=elevation off ground, z)
+  size: Vector3D; // width, height, depth
+  color?: string;
+  accentColor?: string;
+  style?: 'standard' | 'glass-curtain' | 'stepped-wing' | 'skybridge' | 'entrance-portico' | 'podium' | 'bunker';
+  windowPattern?: 'grid' | 'ribbon' | 'scattered' | 'atrium-glow' | 'commit-matrix' | 'terminal-slots' | 'bank-tall';
+}
+
+export type EntranceStyle =
+  | 'bank-portico'
+  | 'canopy-glass'
+  | 'grand-atrium'
+  | 'security-checkpoint'
+  | 'parade-gate'
+  | 'recessed-vestibule'
+  | 'construction-bay'
+  | 'none';
+
+export type RoofEquipmentType =
+  | 'radar-station'
+  | 'construction-crane'
+  | 'hvac-mechanical'
+  | 'spire-beacon'
+  | 'atrium-skylight'
+  | 'weather-sensor'
+  | 'antenna-array'
+  | 'helipad'
+  | 'architectural-void'
+  | 'mech-unit'
+  | 'dome'
+  | 'terrace';
+
+export interface ContextualFigure {
+  id: string;
+  role:
+    | 'office-worker'
+    | 'bank-guard'
+    | 'customer'
+    | 'researcher'
+    | 'spectator'
+    | 'cadet'
+    | 'construction-worker'
+    | 'student';
+  offset: { x: number; y: number }; // 2D ground offset within building footprint or attached plaza
 }
 
 export interface BuildingData {
@@ -53,7 +109,35 @@ export interface BuildingData {
   archetype?: BuildingArchetype;
   reservedProject?: string;
   roofDetail?: 'helipad' | 'antenna' | 'atrium' | 'mech-unit' | 'spire' | 'terrace' | 'dome';
-  windowPattern?: 'grid' | 'ribbon' | 'scattered' | 'atrium-glow';
+  roofEquipment?: RoofEquipmentType;
+  windowPattern?: 'grid' | 'ribbon' | 'scattered' | 'atrium-glow' | 'commit-matrix' | 'terminal-slots' | 'bank-tall';
+  facadeStyle?:
+    | 'stone-glass'
+    | 'laboratory-clean'
+    | 'ribbon-office'
+    | 'exposed-frame'
+    | 'academic-brick-glass'
+    | 'monolithic-obsidian'
+    | 'industrial-ribbed';
+  entranceStyle?: EntranceStyle;
+  secondaryVolumes?: BuildingVolume[];
+  contextualFigures?: ContextualFigure[];
+  groundAttachment?:
+    | 'parade-ground'
+    | 'arena-plaza'
+    | 'construction-yard'
+    | 'bank-forecourt'
+    | 'academic-courtyard'
+    | 'weather-pad';
+  lightingProfile?:
+    | 'warm-office'
+    | 'academic-warm'
+    | 'bank-gold'
+    | 'cool-laboratory'
+    | 'event-amber'
+    | 'training-floodlights'
+    | 'construction-sodium'
+    | 'echo-prism';
   relatedCaseStudyId?: string;
   status: 'operational' | 'in-progress' | 'archived' | 'reserved';
   description: string;
